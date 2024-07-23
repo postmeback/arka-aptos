@@ -1,0 +1,16 @@
+[package]
+name = "Escrow-Project"
+version = "1.0.0"
+authors = []
+
+[addresses]
+escrow_program = '1551fe75e29741ded6855a284649d9fc91838135388507c7962b6101ec7ed107'
+
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]
