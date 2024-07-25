@@ -1,117 +1,71 @@
 # Escrow Smart Contract
 
-This repository contains a simple escrow smart contract written in Move for the Aptos blockchain. The contract facilitates secure transactions between a buyer and a seller by holding funds in escrow until the transaction is completed or canceled.
+## Overview
 
-## Contract Overview
+This Move module implements an escrow contract for automotive sales. The contract allows a buyer to deposit funds into an escrow account and releases them to the seller upon completion of the transaction. If the transaction is not completed, the funds can be returned to the buyer.
 
-The contract includes the following main functions:
+## Module: `escrow_program::escrowContract`
 
-1. **create_escrow**: Initializes a new escrow with the specified seller, buyer, and amount.
-2. **release_funds**: Releases the funds from the escrow to the seller upon successful completion of the transaction.
-3. **cancel_escrow**: Cancels the escrow and returns the funds to the buyer.
+### Structs
 
-## Functions
+- **Escrow**: Represents the escrow agreement.
+  - `seller: address`
+  - `buyer: address`
+  - `amount: u64`
+  - `is_completed: bool`
 
-### create_escrow
+### Functions
 
-```move
-public fun create_escrow<CoinType>(
-    account: &signer,
-    seller: address,
-    buyer: address,
-    amount: u64,
-)
-```
+- **create_escrow<CoinType>**
+  - Parameters:
+    - `account: &signer`: The account initiating the escrow.
+    - `seller: address`: The seller's address.
+    - `buyer: address`: The buyer's address.
+    - `amount: u64`: The amount of coins to be held in escrow.
+  - Description: Creates a new escrow agreement and transfers the specified amount from the sender to the escrow.
 
-- **account**: The signer account creating the escrow.
-- **seller**: The address of the seller.
-- **buyer**: The address of the buyer.
-- **amount**: The amount of funds to be held in escrow.
+- **release_funds<CoinType>**
+  - Parameters:
+    - `account: &signer`: The account releasing the funds.
+  - Description: Releases the funds from escrow to the seller and marks the escrow as completed.
 
-This function transfers the specified amount from the signer's account to the escrow and initializes the `Escrow` struct.
+- **cancel_escrow<CoinType>**
+  - Parameters:
+    - `account: &signer`: The account canceling the escrow.
+  - Description: Cancels the escrow agreement, returns the funds to the buyer, and marks the escrow as completed.
 
-### release_funds
+### Tests
 
-```move
-public fun release_funds<CoinType>(account: &signer) acquires Escrow
-```
+The module includes the following tests to ensure the correct functionality of the escrow contract:
 
-- **account**: The signer account requesting the release of funds.
-
-This function releases the funds from the escrow to the seller and marks the escrow as completed.
-
-### cancel_escrow
-
-```move
-public fun cancel_escrow<CoinType>(account: &signer) acquires Escrow
-```
-
-- **account**: The signer account requesting the cancellation of the escrow.
-
-This function cancels the escrow and returns the funds to the buyer. The escrow is then marked as completed.
+- **test_create_escrow**: Tests the creation of a new escrow agreement.
+- **test_release_funds**: Tests the release of funds from the escrow to the seller.
+- **test_cancel_escrow**: Tests the cancellation of the escrow agreement and return of funds to the buyer.
 
 ## Usage
 
-### Prerequisites
+1. **Create an Escrow**: Call `create_escrow` with the appropriate parameters to create a new escrow agreement and transfer the funds to the escrow.
 
-- [Aptos CLI](https://aptos.dev/cli-tools/aptos-cli/)
-- Move language toolchain
+2. **Release Funds**: Call `release_funds` to release the funds from escrow to the seller upon completion of the transaction.
 
-### Deployment
+3. **Cancel Escrow**: Call `cancel_escrow` to cancel the escrow agreement and return the funds to the buyer if the transaction is not completed.
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-repo/escrow-contract.git
-    cd escrow-contract
-    ```
+## Transaction Details
 
-2. Compile the contract:
-    ```sh
-    aptos move compile --save-metadata
-    ```
-
-3. Publish the contract to the Aptos blockchain:
-    ```sh
-    aptos move publish --private-key <path-to-private-key> --url <aptos-node-url>
-    ```
-
-### Interacting with the Contract
-
-1. **Create Escrow**:
-    ```sh
-    aptos move run --function-id 'escrow_program::escrowContract::create_escrow' --args <seller-address> <buyer-address> <amount>
-    ```
-
-2. **Release Funds**:
-    ```sh
-    aptos move run --function-id 'escrow_program::escrowContract::release_funds'
-    ```
-
-3. **Cancel Escrow**:
-    ```sh
-    aptos move run --function-id 'escrow_program::escrowContract::cancel_escrow'
-    ```
+{
+  "Result": {
+    "transaction_hash": "0x8c9fe2685ff782a2ffefc896a55ec1314a46c91a1dc09a4f6de9306be3f8ca0e",
+    "gas_used": 1521,
+    "gas_unit_price": 100,
+    "sender": "1551fe75e29741ded6855a284649d9fc91838135388507c7962b6101ec7ed107",
+    "sequence_number": 0,
+    "success": true,
+    "timestamp_us": 1721660721579997,
+    "version": 5512100155,
+    "vm_status": "Executed successfully"
+  }
+}
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-## Contact
-
-For any inquiries, please contact [mail(mailto:poddararka27@gmail.com).
-
----
-
-By using this escrow contract, you agree to the terms and conditions outlined in the [LICENSE](LICENSE) file.
-
----
-
-This README provides an overview and usage instructions for the escrow smart contract. If you have any questions or need further assistance, please feel free to reach out.
-
----
-
-Happy coding!
+This project is licensed under the MIT License.
